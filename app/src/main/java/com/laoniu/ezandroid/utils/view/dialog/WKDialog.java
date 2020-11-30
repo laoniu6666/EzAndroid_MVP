@@ -29,19 +29,18 @@ import com.laoniu.ezandroid.utils.other.WKCallback;
  */
 public class WKDialog {
 
-    public static ProgressDialog showProgressDialog(){
-        return showProgressDialog(false,"加载中..");//默认不可手动取消
+    public static ProgressDialog showProgressDialog(Context ctx){
+        return showProgressDialog(ctx,false,"加载中..");//默认不可手动取消
     }
 
     static ProgressDialog waitingDialog;
-    public static ProgressDialog showProgressDialog(boolean cancelable, String msg){
-        Context act = MyActivityManager.getInstance().getCurrentActivity();
-        if(null==act){
-            return null;
+    public static ProgressDialog showProgressDialog(Context ctx,boolean cancelable, String msg){
+        if(null==ctx){
+            ctx= MyActivityManager.getInstance().getCurrentActivity();
         }
         try {
             dissmissProgressDialog();
-            waitingDialog= new ProgressDialog(act);
+            waitingDialog= new ProgressDialog(ctx);
             waitingDialog.setTitle("系统提示");
             waitingDialog.setMessage(msg);
             waitingDialog.setIndeterminate(true);
@@ -91,7 +90,7 @@ public class WKDialog {
     /*************************************************************/
     static String password="123";
     public static void showKeyDialog(Context act,final WKDialogCallback call){
-        showInputDialog(new WKCallback<String>() {
+        showInputDialog(act,new WKCallback<String>() {
             @Override
             public void onCall(String text) {
                 if(text.equals(password)){
@@ -103,8 +102,10 @@ public class WKDialog {
         });
     }
 
-    public static void showInputDialog(final WKCallback call){
-        Context act = MyActivityManager.getInstance().getCurrentActivity();
+    public static void showInputDialog(Context act,final WKCallback call){
+        if(null==act){
+            act = MyActivityManager.getInstance().getCurrentActivity();
+        }
         int width = ScreenUtils.getScreenWidth()-SizeUtils.dp2px(40);
         Dialog d=new Dialog(act);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(

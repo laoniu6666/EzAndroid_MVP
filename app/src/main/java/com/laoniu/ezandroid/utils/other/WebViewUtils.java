@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.view.ViewGroup;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -18,8 +19,10 @@ import com.laoniu.ezandroid.utils.view.dialog.WKDialog;
 public class WebViewUtils {
 
     public WebView webView;
+    public Context context;
 
     public WebViewUtils(Context context,ViewGroup vp){
+        this.context=context;
         webView = new WebView(context.getApplicationContext());
         vp.addView(webView);
     }
@@ -28,8 +31,9 @@ public class WebViewUtils {
         webView.clearCache(true);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-//        webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setSupportZoom(true);
@@ -38,7 +42,6 @@ public class WebViewUtils {
 
         webView.setWebViewClient(getWebViewClient());
         webView.setWebChromeClient(getWebChromeClient());
-        webView.loadUrl("");
     }
 
 
@@ -49,7 +52,7 @@ public class WebViewUtils {
             @Override
             public void onPageStarted(WebView view, String url,
                                       Bitmap favicon) {
-                WKDialog.showProgressDialog();
+                WKDialog.showProgressDialog(context);
                 super.onPageStarted(view, url, favicon);
             }
 

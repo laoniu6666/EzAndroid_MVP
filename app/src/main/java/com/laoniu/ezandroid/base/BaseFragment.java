@@ -58,7 +58,7 @@ public abstract class BaseFragment <P extends BasePresenter, B extends ViewDataB
     protected abstract void initData();
 
     public void showLoading() {
-        WKDialog.showProgressDialog();
+        WKDialog.showProgressDialog(getActivity());
     }
 
     public void dismissLoading() {
@@ -69,6 +69,7 @@ public abstract class BaseFragment <P extends BasePresenter, B extends ViewDataB
     @Override
     public void onDestroy() {
         super.onDestroy();
+        dismissLoading();
         if (null!=mPresenter) {
             mPresenter.detachView();
         }

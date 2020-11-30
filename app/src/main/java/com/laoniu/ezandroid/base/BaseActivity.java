@@ -51,7 +51,7 @@ import com.laoniu.ezandroid.utils.view.dialog.WKDialog;
 
      @MainThread
      public void showLoading() {
-         WKDialog.showProgressDialog();
+         WKDialog.showProgressDialog(this);
      }
 
      @MainThread
@@ -62,6 +62,7 @@ import com.laoniu.ezandroid.utils.view.dialog.WKDialog;
      @Override
      public void onDestroy() {
          super.onDestroy();
+         WKDialog.dissmissProgressDialog();
          if (null!= mPresenter) {
              mPresenter.detachView();
          }

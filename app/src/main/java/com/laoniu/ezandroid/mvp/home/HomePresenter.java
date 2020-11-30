@@ -1,5 +1,7 @@
 package com.laoniu.ezandroid.mvp.home;
 
+import android.content.Context;
+
 import com.blankj.utilcode.util.LogUtils;
 import com.laoniu.ezandroid.base.BaseModel;
 import com.laoniu.ezandroid.base.BasePresenter;
@@ -25,7 +27,7 @@ public class HomePresenter extends BasePresenter<BaseModel, IBaseView> {
     }
 
     public void getIp(){
-        WKDialog.showInputDialog(new WKCallback<String>() {
+        WKDialog.showInputDialog(getView().getContext(),new WKCallback<String>() {
             @Override
             public void onCall(String str) {
                 getIpAddress(str);
