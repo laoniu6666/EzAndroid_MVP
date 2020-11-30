@@ -2,8 +2,10 @@ package com.laoniu.ezandroid;
 
 import android.app.Application;
 
+import com.laoniu.ezandroid.base.BaseApplication;
 
-public class App extends MyApplication {
+
+public class App extends BaseApplication {
 
     public static Application instance;
 

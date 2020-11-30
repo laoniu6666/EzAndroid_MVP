@@ -1,16 +1,17 @@
 package com.laoniu.ezandroid.mvp.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
-import com.laoniu.ezandroid.BaseActivity;
-import com.laoniu.ezandroid.BaseView;
+import com.laoniu.ezandroid.base.BaseActivity;
+import com.laoniu.ezandroid.base.IBaseView;
 import com.laoniu.ezandroid.R;
 import com.laoniu.ezandroid.databinding.ActivityHomeBinding;
 import com.laoniu.ezandroid.mvp.news.NewsActivity;
 import com.laoniu.ezandroid.utils.other.OnFastClickListener;
 
-public class HomeActivity extends BaseActivity<BaseView, HomePresenter, ActivityHomeBinding> {
+public class HomeActivity extends BaseActivity<HomePresenter, ActivityHomeBinding> implements IBaseView{
 
 
     @Override
@@ -24,7 +25,7 @@ public class HomeActivity extends BaseActivity<BaseView, HomePresenter, Activity
     }
 
     @Override
-    protected BaseView getBaseView() {
+    protected IBaseView getBaseView() {
         return this;
     }
 
@@ -34,7 +35,7 @@ public class HomeActivity extends BaseActivity<BaseView, HomePresenter, Activity
         binding.btnGetIp.setOnClickListener(new OnFastClickListener() {
             @Override
             public void onFastClick(View v) {
-                presenter.getIp();
+                mPresenter.getIp();
             }
         });
         binding.btnNews.setOnClickListener(new OnFastClickListener() {
@@ -43,5 +44,10 @@ public class HomeActivity extends BaseActivity<BaseView, HomePresenter, Activity
                 startActivity(new Intent(HomeActivity.this, NewsActivity.class));
             }
         });
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 }

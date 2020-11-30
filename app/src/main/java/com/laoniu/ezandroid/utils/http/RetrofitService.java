@@ -1,7 +1,7 @@
 package com.laoniu.ezandroid.utils.http;
 
-import com.laoniu.ezandroid.model.IPAddress;
-import com.laoniu.ezandroid.model.NewsListBean;
+import com.laoniu.ezandroid.bean.IPAddress;
+import com.laoniu.ezandroid.bean.NewsListBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.POST;

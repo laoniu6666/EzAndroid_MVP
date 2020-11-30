@@ -1,4 +1,4 @@
-package com.laoniu.ezandroid;
+package com.laoniu.ezandroid.base;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,12 +14,11 @@ import androidx.fragment.app.Fragment;
 
 import com.laoniu.ezandroid.utils.view.dialog.WKDialog;
 
-public abstract class BaseFragment <V extends BaseView,P extends BasePresenter, B extends ViewDataBinding>
+public abstract class BaseFragment <P extends BasePresenter, B extends ViewDataBinding>
         extends Fragment{
 
     protected B binding;
-    protected P presenter;
-    protected V mBaseView;
+    protected P mPresenter;
 
     @Nullable
     @Override
@@ -35,13 +34,11 @@ public abstract class BaseFragment <V extends BaseView,P extends BasePresenter, 
         initData();
     }
 
-
     protected void initPresenter(){
         try {
-            this.mBaseView = this.getBaseView();
-            this.presenter = (P)this.getPresenter().newInstance();
-            if (this.presenter != null) {
-                this.presenter.init(mBaseView);
+            this.mPresenter = this.getPresenter().newInstance();
+            if (null!=mPresenter && null!=getBaseView()) {
+                mPresenter.attachView(getBaseView());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,7 +52,7 @@ public abstract class BaseFragment <V extends BaseView,P extends BasePresenter, 
     @MainThread
     protected abstract Class<P> getPresenter();
     @MainThread
-    protected abstract V getBaseView();
+    protected abstract IBaseView getBaseView();
 
     @MainThread
     protected abstract void initData();
@@ -67,4 +64,14 @@ public abstract class BaseFragment <V extends BaseView,P extends BasePresenter, 
     public void dismissLoading() {
         WKDialog.dissmissProgressDialog();
     }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (null!=mPresenter) {
+            mPresenter.detachView();
+        }
+    }
+
 }

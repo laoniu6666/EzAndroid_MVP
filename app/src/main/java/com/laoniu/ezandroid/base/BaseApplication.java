@@ -1,4 +1,4 @@
-package com.laoniu.ezandroid;
+package com.laoniu.ezandroid.base;
 
 import android.app.Activity;
 import android.app.Application;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.laoniu.ezandroid.R;
 import com.laoniu.ezandroid.utils.other.MyActivityManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
@@ -23,7 +24,7 @@ import com.scwang.smartrefresh.layout.header.BezierRadarHeader;
 /**
  * 各种方法可以在父类实现
  */
-public abstract class MyApplication extends Application {
+public abstract class BaseApplication extends Application {
 
     static {
         //设置全局的Header构建器

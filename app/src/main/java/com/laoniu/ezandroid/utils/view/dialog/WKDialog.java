@@ -36,19 +36,29 @@ public class WKDialog {
     static ProgressDialog waitingDialog;
     public static ProgressDialog showProgressDialog(boolean cancelable, String msg){
         Context act = MyActivityManager.getInstance().getCurrentActivity();
-        dissmissProgressDialog();
-        waitingDialog= new ProgressDialog(act);
-        waitingDialog.setTitle("系统提示");
-        waitingDialog.setMessage(msg);
-        waitingDialog.setIndeterminate(true);
+        if(null==act){
+            return null;
+        }
+        try {
+            dissmissProgressDialog();
+            waitingDialog= new ProgressDialog(act);
+            waitingDialog.setTitle("系统提示");
+            waitingDialog.setMessage(msg);
+            waitingDialog.setIndeterminate(true);
 //        waitingDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        waitingDialog.setCancelable(cancelable);
-        waitingDialog.show();
+            waitingDialog.setCancelable(cancelable);
+            waitingDialog.setCanceledOnTouchOutside(false);
+            waitingDialog.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return waitingDialog;
     }
     public static void dissmissProgressDialog(){
-        if(null!=waitingDialog && waitingDialog.isShowing()){
-            waitingDialog.dismiss();
+        if(null!=waitingDialog){
+            if(waitingDialog.isShowing()){
+                waitingDialog.dismiss();
+            }
             waitingDialog=null;
         }
     }

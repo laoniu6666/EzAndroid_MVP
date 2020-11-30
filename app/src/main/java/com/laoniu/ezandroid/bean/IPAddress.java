@@ -1,4 +1,4 @@
-package com.laoniu.ezandroid.model;
+package com.laoniu.ezandroid.bean;
 
 public class IPAddress {
 

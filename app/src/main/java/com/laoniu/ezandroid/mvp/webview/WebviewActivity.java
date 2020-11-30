@@ -1,20 +1,21 @@
 package com.laoniu.ezandroid.mvp.webview;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-import com.laoniu.ezandroid.BaseActivity;
-import com.laoniu.ezandroid.BasePresenter;
-import com.laoniu.ezandroid.BaseView;
+import com.laoniu.ezandroid.base.BaseActivity;
+import com.laoniu.ezandroid.base.BasePresenter;
 import com.laoniu.ezandroid.R;
+import com.laoniu.ezandroid.base.IBaseView;
 import com.laoniu.ezandroid.databinding.ActWebviewBinding;
 import com.laoniu.ezandroid.utils.other.WebViewUtils;
+import com.laoniu.ezandroid.utils.view.ActionBarHelper;
 
-public class WebviewActivity extends BaseActivity<BaseView,BasePresenter, ActWebviewBinding> {
+public class WebviewActivity extends BaseActivity<BasePresenter, ActWebviewBinding> {
 
-    WebView webView;
-
+    WebViewUtils webViewUtils;
     @Override
     protected int getLayoutId() {
         return R.layout.act_webview;
@@ -26,38 +27,41 @@ public class WebviewActivity extends BaseActivity<BaseView,BasePresenter, ActWeb
     }
 
     @Override
-    protected BaseView getBaseView() {
-        return this;
+    protected IBaseView getBaseView() {
+        return null;
     }
-
+    String url;
     @Override
     protected void initData() {
-        String url = getIntent().getStringExtra("data");
+        url = getIntent().getStringExtra("data");
         String title = getIntent().getStringExtra("title");
 
-        setTitle(!TextUtils.isEmpty(title) ? title : "");
+        title=!TextUtils.isEmpty(title) ? title : "";
+        ActionBarHelper.setTitle(WebviewActivity.this,title);
         if(TextUtils.isEmpty(url)){
 //            ToastUtils.showShort("url不能为空");
 //            finish();
 //            return;
             url= "https://m.baidu.com";
         }
-        webView = binding.webview;
-        WebViewUtils.set(webView);
-        webView.loadUrl(url);
+        webViewUtils = new WebViewUtils(WebviewActivity.this,binding.flContent);
+        webViewUtils.setParam();
+        webViewUtils.webView.loadUrl(url);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(webViewUtils.webView.canGoBack()&& !url.equals(webViewUtils.webView.getOriginalUrl())){
+            webViewUtils.webView.goBack();
+        }else{
+            super.onBackPressed();
+        }
+    }
 
     @Override
-    protected void onDestroy() {
-        if (webView != null) {
-            webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
-            webView.clearHistory();
-
-            ((ViewGroup) webView.getParent()).removeView(webView);
-            webView.destroy();
-            webView = null;
-        }
+    public void onDestroy() {
+        android.os.Process.killProcess(android.os.Process.myPid());
+        Log.e("zwk","杀死这个webview");
         super.onDestroy();
     }
 }

@@ -1,11 +1,13 @@
 package com.laoniu.ezandroid.mvp.home;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.laoniu.ezandroid.BasePresenter;
-import com.laoniu.ezandroid.model.CommonData;
-import com.laoniu.ezandroid.model.IPAddress;
+import com.laoniu.ezandroid.base.BaseModel;
+import com.laoniu.ezandroid.base.BasePresenter;
+import com.laoniu.ezandroid.base.IBaseView;
+import com.laoniu.ezandroid.bean.CommonData;
+import com.laoniu.ezandroid.bean.IPAddress;
 import com.laoniu.ezandroid.utils.http.BaseResponse;
-import com.laoniu.ezandroid.utils.http.WKHttp;
+import com.laoniu.ezandroid.utils.http.RetrofitHelper;
 import com.laoniu.ezandroid.utils.other.WKCallback;
 import com.laoniu.ezandroid.utils.other.WKJsonUtil;
 import com.laoniu.ezandroid.utils.view.dialog.WKDialog;
@@ -15,7 +17,12 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class HomePresenter extends BasePresenter {
+public class HomePresenter extends BasePresenter<BaseModel, IBaseView> {
+
+    @Override
+    protected BaseModel getBaseModel() {
+        return new BaseModel();
+    }
 
     public void getIp(){
         WKDialog.showInputDialog(new WKCallback<String>() {
@@ -28,14 +35,14 @@ public class HomePresenter extends BasePresenter {
 
     private void getIpAddress(String str){
         str="60.31.89.9";
-        mBaseView.showLoading();
-        add(WKHttp.getInstance().getService().getIpAddress(str, CommonData.getKey_juhe_IP())
+        showLoading();
+        RetrofitHelper.getInstance().getService().getIpAddress(str, CommonData.getKey_juhe_IP())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<BaseResponse<IPAddress>>() {
                     @Override
                     public void accept(BaseResponse<IPAddress> response) {
-                        mBaseView.dismissLoading();
+                        dismissLoading();
                         String text= WKJsonUtil.formatJson(response);
                         LogUtils.e(text);
                         if(response.error_code==0){
@@ -48,9 +55,9 @@ public class HomePresenter extends BasePresenter {
                     @Override
                     public void accept(Throwable throwable) {
                         throwable.printStackTrace();
-                        mBaseView.dismissLoading();
+                        dismissLoading();
                     }
-                }));
+                });
     }
 
 }

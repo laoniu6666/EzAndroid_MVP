@@ -6,7 +6,7 @@
     android:paddingStart="15dp"
     android:paddingEnd="15dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tv_title"
@@ -28,7 +28,6 @@
             android:layout_weight="1"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/meinv"
             />
         <View
             android:layout_width="5dp"
@@ -39,7 +38,6 @@
             android:layout_weight="1"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/meinv"
             />
         <View
             android:layout_width="5dp"
@@ -50,7 +48,6 @@
             android:layout_weight="1"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/meinv"
             />
     </LinearLayout>
 

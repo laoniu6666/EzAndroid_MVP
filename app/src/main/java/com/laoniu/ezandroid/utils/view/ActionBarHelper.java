@@ -16,17 +16,17 @@ public class ActionBarHelper {
 	 * @param str
 	 * @param context
 	 */
-	public static void setTitle(String str, Activity context) {
+	public static void setTitle(Activity context,String str) {
 		if (null != context.findViewById(R.id.title))
 			((TextView) context.findViewById(R.id.title)).setText(str);
 	}
 
-	public static void setRight(String str, Activity context) {
+	public static void setRight(Activity context,String str) {
 		if (null != context.findViewById(R.id.tv_right))
 			((TextView) context.findViewById(R.id.tv_right)).setText(str);
 			((TextView) context.findViewById(R.id.tv_right)).setVisibility(View.VISIBLE);
 	}
-	public static void setRightImage(int resId, Activity context) {
+	public static void setRightImage(Activity context,int resId) {
 		if (null != context.findViewById(R.id.iv_right))
 			((ImageView) context.findViewById(R.id.iv_right)).setImageResource(resId);
 		context.findViewById(R.id.iv_right).setVisibility(View.VISIBLE);

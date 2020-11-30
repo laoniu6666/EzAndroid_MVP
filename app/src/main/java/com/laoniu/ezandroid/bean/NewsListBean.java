@@ -1,4 +1,4 @@
-package com.laoniu.ezandroid.model;
+package com.laoniu.ezandroid.bean;
 
 import com.laoniu.ezandroid.utils.http.BaseResponse;
 

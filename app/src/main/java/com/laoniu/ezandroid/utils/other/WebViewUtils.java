@@ -1,8 +1,10 @@
 package com.laoniu.ezandroid.utils.other;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.view.ViewGroup;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -15,11 +17,19 @@ import com.laoniu.ezandroid.utils.view.dialog.WKDialog;
 
 public class WebViewUtils {
 
-    public static void set(WebView webView){
+    public WebView webView;
+
+    public WebViewUtils(Context context,ViewGroup vp){
+        webView = new WebView(context.getApplicationContext());
+        vp.addView(webView);
+    }
+
+    public void setParam(){
         webView.clearCache(true);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
+//        webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setSupportZoom(true);
@@ -33,7 +43,7 @@ public class WebViewUtils {
 
 
 
-    public static WebViewClient getWebViewClient(){
+    private WebViewClient getWebViewClient(){
         return new WebViewClient(){
 
             @Override
@@ -59,7 +69,7 @@ public class WebViewUtils {
             }
         };
     }
-    public static WebChromeClient getWebChromeClient(){
+    private WebChromeClient getWebChromeClient(){
         return new WebChromeClient(){
 
             @Override
@@ -77,5 +87,14 @@ public class WebViewUtils {
         };
     }
 
+
+    public void onDestroy(){
+        if (null!= webView) {
+            webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+            webView.clearHistory();
+            ((ViewGroup) webView.getParent()).removeView(webView);
+            webView.destroy();
+        }
+    }
 
 }

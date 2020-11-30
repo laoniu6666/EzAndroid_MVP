@@ -1,4 +1,4 @@
-package com.laoniu.ezandroid.mvp.news;
+package com.laoniu.ezandroid.mvp.news.fmt;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +11,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.laoniu.ezandroid.BaseFragment;
 import com.laoniu.ezandroid.R;
+import com.laoniu.ezandroid.base.BaseFragment;
 import com.laoniu.ezandroid.databinding.FmtNewsBinding;
 import com.laoniu.ezandroid.databinding.ItemNewsListBinding;
-import com.laoniu.ezandroid.model.CommonData;
-import com.laoniu.ezandroid.model.NewsListBean.NewsList;
+import com.laoniu.ezandroid.bean.CommonData;
+import com.laoniu.ezandroid.bean.NewsListBean.NewsList;
+import com.laoniu.ezandroid.mvp.news.NewsContract;
+import com.laoniu.ezandroid.mvp.news.NewsPresenter;
 import com.laoniu.ezandroid.mvp.webview.WebviewActivity;
 import com.laoniu.ezandroid.utils.other.ImgUtils;
 import com.laoniu.ezandroid.utils.other.OnFastClickListener;
@@ -25,7 +27,7 @@ import com.laoniu.ezandroid.utils.view.adapter.MyRecycleViewAdapter2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsFragment extends BaseFragment<NewsView,NewsPresenter, FmtNewsBinding> implements NewsView {
+public class NewsFragment extends BaseFragment<NewsPresenter, FmtNewsBinding>implements NewsContract.INewsView {
     public static final String POSITION = "position";
 
     List<NewsList> lists = new ArrayList<>();
@@ -50,13 +52,13 @@ public class NewsFragment extends BaseFragment<NewsView,NewsPresenter, FmtNewsBi
     }
 
     @Override
-    protected NewsView getBaseView() {
+    protected NewsContract.INewsView getBaseView() {
         return this;
     }
 
-
     @Override
     protected void initData() {
+        Log.e("zwk","NewsFragment,initData,pos="+getArguments().getInt(POSITION));
         binding.rcv.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rcv.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayout.VERTICAL));
         adapter = new MyRecycleViewAdapter2<NewsList, ItemNewsListBinding>(lists,R.layout.item_news_list) {
@@ -86,7 +88,7 @@ public class NewsFragment extends BaseFragment<NewsView,NewsPresenter, FmtNewsBi
         binding.rcv.setAdapter(adapter);
 
         int pos = getArguments().getInt(POSITION, 0);
-        presenter.getData(CommonData.news_title_value[pos]);
+        mPresenter.getData(CommonData.news_title_value[pos]);
     }
 
     @Override
@@ -96,5 +98,6 @@ public class NewsFragment extends BaseFragment<NewsView,NewsPresenter, FmtNewsBi
         lists.addAll(data);
         adapter.notifyDataSetChanged();
     }
+
 }
 
