@@ -1,5 +1,5 @@
 # EzAndroid_MVP
-use mpv + retrofit +rxjava
+use mvp + retrofit +rxjava
 
 
 developing.. wait
