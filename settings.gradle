@@ -1,2 +1,3 @@
+include ':myjavalib'
 include ':app'
 rootProject.name = "EzAndroid_mvp"
