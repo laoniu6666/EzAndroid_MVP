@@ -1,23 +1,21 @@
-package com.laoniu.ezandroid.mvp.im;
+package com.laoniu.ezandroid.mvp.im.conversation;
 
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.laoniu.ezandroid.R;
 import com.laoniu.ezandroid.base.BaseActivity;
 import com.laoniu.ezandroid.base.BasePresenter;
 import com.laoniu.ezandroid.base.IBaseView;
-import com.laoniu.ezandroid.bean.MessageListBean;
-import com.laoniu.ezandroid.databinding.ActImBinding;
-import com.laoniu.ezandroid.databinding.ItemListTestBinding;
-import com.laoniu.ezandroid.mvp.im.conversation.ConversationActivity;
-import com.laoniu.ezandroid.utils.other.OnFastClickListener;
+import com.laoniu.ezandroid.bean.ConversationListBean;
+import com.laoniu.ezandroid.databinding.ActImConversationListBinding;
+import com.laoniu.ezandroid.databinding.ItemListConversationBinding;
 import com.laoniu.ezandroid.utils.other.T;
 import com.laoniu.ezandroid.utils.view.OnLoadMoreListener;
 import com.laoniu.ezandroid.utils.view.adapter.MyRecycleViewAdapter2;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,14 +23,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 /**
  * 消息列表
  */
-public class IMActivity extends BaseActivity<BasePresenter, ActImBinding> {
+public class ConversationActivity extends BaseActivity<BasePresenter, ActImConversationListBinding> {
 
     Context context;
     OnLoadMoreListener mOnLoadMoreListener = () -> T.toast("我是有下限的～");
 
     @Override
     protected int getLayoutId() {
-        return R.layout.act_im;
+        return R.layout.act_im_conversation_list;
     }
 
     @Override
@@ -47,24 +45,26 @@ public class IMActivity extends BaseActivity<BasePresenter, ActImBinding> {
 
     @Override
     protected void initData() {
-        List<MessageListBean> mList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            mList.add(new MessageListBean());
-        }
-        context = IMActivity.this;
+        List<ConversationListBean> mList = TalkData.getData();
+        context = ConversationActivity.this;
         binding.rcv.setLayoutManager(new LinearLayoutManager(context));
         MyRecycleViewAdapter2 adapter = new MyRecycleViewAdapter2
-                <MessageListBean, ItemListTestBinding>(mList, R.layout.item_list_test) {
+                <ConversationListBean, ItemListConversationBinding>(mList, R.layout.item_list_conversation) {
             @Override
             public void convert(MyViewHolder holder, int pos) {
-//                ImgUtils.setView(holder.binding.icon, mList.get(pos).getIcon());
-//                holder.binding.tv.setText(mList.get(pos).getMessage());
-                holder.itemView.setOnClickListener(new OnFastClickListener() {
-                    @Override
-                    public void onFastClick(View v) {
-                        startActivity(new Intent(IMActivity.this, ConversationActivity.class));
-                    }
-                });
+                String name = mList.get(pos).getName();
+                String msg = mList.get(pos).getMessage();
+                boolean isMe = TextUtils.isEmpty(name);
+
+                holder.binding.rlOther.setVisibility(!isMe ? View.VISIBLE : View.GONE);
+                holder.binding.rlMe.setVisibility(isMe ? View.VISIBLE : View.GONE);
+                if (!isMe) {
+                    holder.binding.icon.setBackgroundColor(Color.RED);
+                    holder.binding.tvMsg.setText(msg);
+                } else {
+                    holder.binding.iconMe.setBackgroundColor(Color.GREEN);
+                    holder.binding.tvMsgMe.setText(msg);
+                }
             }
         };
         binding.rcv.setAdapter(adapter);
