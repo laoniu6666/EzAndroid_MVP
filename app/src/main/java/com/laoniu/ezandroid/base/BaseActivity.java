@@ -86,4 +86,9 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
         }
     }
 
+    protected void setBackViewVisible(int isVisible) {
+        View backView = findViewById(R.id.v_left);
+        backView.setVisibility(isVisible);
+    }
+
 }

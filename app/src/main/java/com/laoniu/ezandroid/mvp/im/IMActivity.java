@@ -47,6 +47,7 @@ public class IMActivity extends BaseActivity<BasePresenter, ActImBinding> {
 
     @Override
     protected void initData() {
+        setBackViewVisible(View.VISIBLE);
         List<MessageListBean> mList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             mList.add(new MessageListBean());
@@ -68,13 +69,7 @@ public class IMActivity extends BaseActivity<BasePresenter, ActImBinding> {
             }
         };
         binding.rcv.setAdapter(adapter);
-        binding.titleLayout.title.setOnClickListener(v -> showCheckDialog());
         binding.titleLayout.title.setText("消息列表");
     }
 
-    private void showCheckDialog() {
-        if (T.isFastClick()) {
-            return;
-        }
-    }
 }
