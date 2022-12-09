@@ -22,7 +22,7 @@ public class IOSDialog {
     private TextView txt_msg;
     private Button btn_neg;
     private Button btn_pos;
-    private ImageView img_line;
+    private View img_line;
     private Display display;
     private boolean showTitle = false;
     private boolean showMsg = false;
@@ -40,16 +40,16 @@ public class IOSDialog {
         View view = LayoutInflater.from(context).inflate(
                 R.layout.dialog_ios, null);
 
-        lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
-        txt_title = (TextView) view.findViewById(R.id.txt_title);
+        lLayout_bg = view.findViewById(R.id.lLayout_bg);
+        txt_title = view.findViewById(R.id.txt_title);
         txt_title.setVisibility(View.GONE);
-        txt_msg = (TextView) view.findViewById(R.id.txt_msg);
+        txt_msg = view.findViewById(R.id.txt_msg);
         txt_msg.setVisibility(View.GONE);
-        btn_neg = (Button) view.findViewById(R.id.btn_neg);
+        btn_neg = view.findViewById(R.id.btn_neg);
         btn_neg.setVisibility(View.GONE);
-        btn_pos = (Button) view.findViewById(R.id.btn_pos);
+        btn_pos = view.findViewById(R.id.btn_pos);
         btn_pos.setVisibility(View.GONE);
-        img_line = (ImageView) view.findViewById(R.id.img_line);
+        img_line = view.findViewById(R.id.img_line);
         img_line.setVisibility(View.GONE);
 
 //        dialog = new Dialog(context, R.style.Theme_AppCompat_Dialog);
